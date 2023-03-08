@@ -13,7 +13,7 @@
             <div class="col-6">
                 <div class="mb-3 ">
                     <label for="title" class="form-label d-block">Title:</label>
-                    <input type="text" class="form-control" id="title" minlength="2" maxlength="100" placeholder="Inserisci il titolo" value="{{$project->title}}"
+                    <input type="text" class="form-control" id="title" minlength="2" maxlength="100" placeholder="Inserisci il titolo" value="{{old('title', $project->title)}}"
                         name="title" required>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                 <div class="mb-3">
                     <label for="img" class="form-label">Image:</label>
                     <input type="url" class="form-control" id="image"
-                        placeholder="Inserisci url image" value="{{$project->image}}" name="image">
+                        placeholder="Inserisci url image" value="{{old('image',$project->image)}}" name="image">
                 </div>
             </div>
             {{-- Link github --}}
@@ -30,7 +30,7 @@
                 <div class="mb-3">
                     <label for="github" class="form-label">Link Project:</label>
                     <input type="url" class="form-control" id="github"
-                        placeholder="Inserisci url github" value="{{$project->github}}" name="github">
+                        placeholder="Inserisci url github" value="{{old('github',$project->github)}}" name="github">
                 </div>
             </div>
             {{-- Description --}}
@@ -38,7 +38,7 @@
                 <div class="mb-3">
                     <label for="description" class="form-label">Description:</label>
                     <textarea type="text" class="form-control" id="description"
-                        placeholder="Inserisci descrizione" name="description">{{$project->description}}</textarea>
+                        placeholder="Inserisci descrizione" name="description">{{old('description',$project->description)}}</textarea>
                 </div>
             </div>
         </div>
