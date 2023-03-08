@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Handler\Proxy;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+
+
 
 class ProjectController extends Controller
 {
@@ -33,6 +36,24 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string|unique:projects|min:2|max:100',
+            'paragraph' => 'required|string',
+            'image' => 'nullable|url',
+            'github' => 'nullable|url',
+
+        ], [
+            'title.required' => 'Il titolo è necessario',
+            'title.string' => 'Il titolo deve essere una stringa',
+            'title.unique' => 'Il titolo non può essere lo stesso di un altro progetto',
+            'title.min' => 'Il titolo è necessario sia di almeno 2 lettere',
+            'title.max' => 'Il titolo è necessario sia meno di almeno 100 lettere',
+            'paragraph.required' => 'Il paragrafo deve essere inserito',
+            'paragraph.string' => 'Il paragraph deve essere una stringa',
+            'image.url' => 'L\' immagine deve essere un link',
+            'github.url' => 'Il link github deve essere corretto',
+
+        ]);
         $data = $request->all();
         $project = new Project();
         $project->fill($data);
@@ -62,6 +83,24 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $request->validate([
+            'title' => ['required', 'string', Rule::unique('projects')->ignore($project->id), 'min:2', 'max:100'],
+            'paragraph' => ['required', 'string'],
+            'image' => ['nullable', 'url'],
+            'github' => ['nullable', 'url']
+
+        ], [
+            'title.required' => 'Il titolo è necessario',
+            'title.string' => 'Il titolo deve essere una stringa',
+            'title.unique' => 'Il titolo non può essere lo stesso di un altro progetto',
+            'title.min' => 'Il titolo è necessario sia di almeno 2 lettere',
+            'title.max' => 'Il titolo è necessario sia meno di almeno 100 lettere',
+            'paragraph.required' => 'La descrizione deve essere inserita',
+            'paragraph.string' => 'La descrizione deve essere una stringa',
+            'image.url' => 'L\' immagine deve essere un link',
+            'github.url' => 'Il link github deve essere corretto',
+
+        ]);
         $data = $request->all();
         $project['slug'] = Str::slug($data['title'], '-');
         $project->update($data);

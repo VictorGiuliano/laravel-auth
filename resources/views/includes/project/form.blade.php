@@ -1,7 +1,7 @@
 
 <div class="form-create mt-5 bg-light p-5 rounded-3">
 @if($project->exists)
-<form method="POST" action="{{ route('admin.projects.update', $project->id)}}">
+<form method="POST" novalidate action="{{ route('admin.projects.update', $project->id)}}">
     @method('PUT')
 @else
 <form method="POST" action="{{ route('admin.projects.store') }}">
@@ -13,7 +13,7 @@
             <div class="col-6">
                 <div class="mb-3 ">
                     <label for="title" class="form-label d-block">Title:</label>
-                    <input type="text" class="form-control" id="title" placeholder="Inserisci il titolo" value="{{$project->title}}"
+                    <input type="text" class="form-control" id="title" minlength="2" maxlength="100" placeholder="Inserisci il titolo" value="{{$project->title}}"
                         name="title" required>
                 </div>
             </div>
