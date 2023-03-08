@@ -18,7 +18,7 @@
 <hr>
 <div class="container d-flex justify-content-start">
     <a href="{{$project->github}}" class="btn mx-1 small btn-primary">Vai al sito <i class="fa-brands fa-github"></i></a>
-    <button class="btn small btn-warning">Modifica</button>
+    <a href="{{route('admin.projects.edit', $project->id)}}" class="btn small btn-warning">Modifica</a>
 </div>
 </div>
 @endsection
