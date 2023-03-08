@@ -65,6 +65,7 @@ class ProjectController extends Controller
         $data = $request->all();
         $project['slug'] = Str::slug($data['title'], '-');
         $project->update($data);
+        return to_route('admin.project.show', $project->id);
     }
 
     /**
@@ -72,6 +73,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return to_route('admin.projects.index');
     }
 }

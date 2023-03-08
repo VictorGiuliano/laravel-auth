@@ -11,7 +11,11 @@
             <h4>Title: {{$project->title}}</h4>
             <div class="container d-flex justify-content-center">
                 <a href="{{route('admin.projects.show', $project->id)}}" class="btn mx-1 small btn-primary"><i class="fa-solid fa-eye"></i></a>
+                <form action="{{route('admin.projects.destroy',$project->id)}}" method="POST">
+                    @csrf
+                    @method('DELETE')
                 <button class="btn small btn-danger">Delete</button>
+                </form>
             </div>
         </div>  
         @endforeach
