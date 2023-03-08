@@ -1,5 +1,5 @@
-@extends('layouts.app')
-@section('title','Projects')
+@extends ('layouts.app')
+@section ('title','Projects')
     
 @section ('content')
 <h1>Projects</h1>
@@ -11,14 +11,26 @@
             <h4>Title: {{$project->title}}</h4>
             <div class="container d-flex justify-content-center">
                 <a href="{{route('admin.projects.show', $project->id)}}" class="btn mx-3 small btn-primary"><i class="fa-solid fa-eye"></i></a>
-                <form action="{{route('admin.projects.destroy',$project->id)}}" method="POST">
+                <form action="{{route('admin.projects.destroy',$project->id)}}" method="POST" class="delete-form">
                     @csrf
                     @method('DELETE')
-                <button class="btn small btn-danger"><i class="fa-solid fa-trash"></i></button>
+                <button type="submit" class="btn small btn-danger"><i class="fa-solid fa-trash"></i></button>
                 </form>
             </div>
         </div>  
         @endforeach
     </div>
 </div>
+@endsection
+@section ('script')
+<script>
+    const deleteForm = document.querySelectorAll('.delete-form');
+        deleteForm.forEach(form => {
+            form.addEventListener('submit', e =>{
+                e.preventDefault();
+                const hasConfirmed = confirm('Sei sicuro di voler eliminare il project?');
+                if(hasConfirmed) form.submit();
+            })
+        })
+</script>
 @endsection
