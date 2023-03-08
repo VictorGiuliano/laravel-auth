@@ -38,7 +38,7 @@ class ProjectController extends Controller
         $project->fill($data);
         $project->slug = Str::slug($project->title, '-');
         $project->save();
-        return to_route('admin.projects.show', $project->id);
+        return to_route('admin.projects.show', $project->id)->with('type', 'success')->with('msg', "Il project '$project->title' è stato creato con successo.");
     }
 
     /**
@@ -65,7 +65,7 @@ class ProjectController extends Controller
         $data = $request->all();
         $project['slug'] = Str::slug($data['title'], '-');
         $project->update($data);
-        return to_route('admin.project.show', $project->id);
+        return to_route('admin.projects.show', $project->id)->with('type', 'success')->with('msg', "Il project '$project->title' è stato aggiornato con successo.");
     }
 
     /**
@@ -74,6 +74,6 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return to_route('admin.projects.index');
+        return to_route('admin.projects.index')->with('type', 'danger')->with('msg', "Il project '$project->title' è stato cancellato con successo.");
     }
 }
