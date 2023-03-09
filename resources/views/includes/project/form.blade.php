@@ -53,21 +53,3 @@
         <a href="{{ route('admin.home') }}" class="btn mx-1 small btn-secondary">Indietro</a>
     </form>
 </div>
-@section('script')
-<script>
-    const inputImage = document.getElementById('image');
-    const preview = document.getElementById('preview');
-
-    const placeholder = 'https://marcolanci.it/utils/placeholder.jpg';
-    inputImage.addEventListener('change',() => {
-        if(inputImage.files && inputImage.files[0]){
-            let reader = new FileReader();
-            reader.readAsDataURL(inputImage.files[0]);
-            reader.onload = e => {
-                preview.src = e.target.result;
-            } 
-        }else preview.src = placeholder;
-    });
-</script>
-    
-@endsection
