@@ -33,6 +33,9 @@
                         placeholder="Inserisci url image" value="{{old('image',$project->image)}}" name="image">
                 </div>
             </div>
+            <div class="col-3">
+                    <img id="preview" class="img-fluid" src="{{$project->image ? asset('storage/'. $project->image) : 'https://marcolanci.it/utils/placeholder.jpg'}}" alt="">
+            </div>
 
             {{-- Description --}}
             <div class="col-12">
@@ -50,3 +53,17 @@
         <a href="{{ route('admin.home') }}" class="btn mx-1 small btn-secondary">Indietro</a>
     </form>
 </div>
+@section('script')
+<script>
+    const inputImage = document.getElementById('image');
+    const preview = document.getElementById('preview');
+
+    const placeholder = 'https://marcolanci.it/utils/placeholder.jpg';
+    inputImage.addEventListener('change',() => {
+        if(inputImage.files){
+
+        }else preview.src = placeholder;
+    });
+</script>
+    
+@endsection

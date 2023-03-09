@@ -6,6 +6,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Handler\Proxy;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -39,7 +40,7 @@ class ProjectController extends Controller
         $request->validate([
             'title' => 'required|string|unique:projects|min:2|max:100',
             'description' => 'required|string',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg, jpg, png',
             'github' => 'nullable|url',
 
         ], [
@@ -50,13 +51,19 @@ class ProjectController extends Controller
             'title.max' => 'Il titolo è necessario sia meno di almeno 100 lettere',
             'description.required' => 'Il paragrafo deve essere inserito',
             'description.string' => 'Il paragraph deve essere una stringa',
-            'image.url' => 'L\' immagine deve essere un link',
+            'image.image' => 'L\' immagine deve essere un file immagine',
+            'image.mimes' => 'L\' immagine deve avere come estensioni jpeg, jpg, png',
             'github.url' => 'Il link github deve essere corretto',
 
         ]);
         $data = $request->all();
         $project = new Project();
+        if (array_key_exists('image', $data)) {
+            $img_url = Storage::put('projects', $data['image']);
+            $data['image'] = $img_url;
+        }
         $project->fill($data);
+
         $project->slug = Str::slug($project->title, '-');
         $project->save();
         return to_route('admin.projects.show', $project->id)->with('type', 'success')->with('msg', "Il project '$project->title' è stato creato con successo.");
@@ -86,7 +93,7 @@ class ProjectController extends Controller
         $request->validate([
             'title' => ['required', 'string', Rule::unique('projects')->ignore($project->id), 'min:2', 'max:100'],
             'description' => ['required', 'string'],
-            'image' => ['nullable', 'url'],
+            'image' => ['nullable', 'image|mimes:jpeg, jpg, png'],
             'github' => ['nullable', 'url']
 
         ], [
@@ -97,12 +104,18 @@ class ProjectController extends Controller
             'title.max' => 'Il titolo è necessario sia meno di almeno 100 lettere',
             'description.required' => 'La descrizione deve essere inserita',
             'description.string' => 'La descrizione deve essere una stringa',
-            'image.url' => 'L\' immagine deve essere un link',
+            'image.image' => 'L\' immagine deve essere un file immagine',
+            'image.mimes' => 'L\' immagine deve avere come estensioni jpeg, jpg, png',
             'github.url' => 'Il link github deve essere corretto',
 
         ]);
         $data = $request->all();
         $project['slug'] = Str::slug($data['title'], '-');
+        if (array_key_exists('image', $data)) {
+            if ($project->image) Storage::delete($project->image);
+            $img_url = Storage::put('projects', $data['image']);
+            $data['image'] = $img_url;
+        }
         $project->update($data);
         return to_route('admin.projects.show', $project->id)->with('type', 'success')->with('msg', "Il project '$project->title' è stato aggiornato con successo.");
     }
@@ -112,6 +125,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->image) Storage::delete($project->image);
         $project->delete();
         return to_route('admin.projects.index')->with('type', 'danger')->with('msg', "Il project '$project->title' è stato cancellato con successo.");
     }
