@@ -60,8 +60,12 @@
 
     const placeholder = 'https://marcolanci.it/utils/placeholder.jpg';
     inputImage.addEventListener('change',() => {
-        if(inputImage.files){
-
+        if(inputImage.files && inputImage.files[0]){
+            let reader = new FileReader();
+            reader.readAsDataURL(inputImage.files[0]);
+            reader.onload = e => {
+                preview.src = e.target.result;
+            } 
         }else preview.src = placeholder;
     });
 </script>
