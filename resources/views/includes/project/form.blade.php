@@ -17,14 +17,6 @@
                         name="title" required>
                 </div>
             </div>
-            {{-- Image --}}
-            <div class="col-6">
-                <div class="mb-3">
-                    <label for="img" class="form-label">Image:</label>
-                    <input type="url" class="form-control" id="image"
-                        placeholder="Inserisci url image" value="{{old('image',$project->image)}}" name="image">
-                </div>
-            </div>
             {{-- Link github --}}
             <div class="col-6">
                 <div class="mb-3">
@@ -33,8 +25,17 @@
                         placeholder="Inserisci url github" value="{{old('github',$project->github)}}" name="github">
                 </div>
             </div>
-            {{-- Description --}}
+            {{-- Image --}}
             <div class="col-6">
+                <div class="mb-3">
+                    <label for="img" class="form-label">Image:</label>
+                    <input type="url" class="form-control" id="image"
+                        placeholder="Inserisci url image" value="{{old('image',$project->image)}}" name="image">
+                </div>
+            </div>
+            
+            {{-- Description --}}
+            <div class="col-12">
                 <div class="mb-3">
                     <label for="description" class="form-label">Description:</label>
                     <textarea type="text" class="form-control" id="description"
